@@ -1,7 +1,7 @@
 resource "aws_security_group" "workshop_sg" {
   name        = "workshop-sg"
   description = "Security group for the workshop host."
-  vpc_id      = data.terraform_remote_state.vpc.outputs.vpc_id
+  vpc_id      = var.vpc_id
 
   tags = {
     Name = "workshop-sg"
