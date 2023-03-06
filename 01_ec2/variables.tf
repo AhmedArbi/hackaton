@@ -22,3 +22,12 @@ variable "key_name" {
   description = "SSH key name to access the instance"
 }
 
+
+variable "hosted_zone_id" {
+  type = string
+}
+
+variable "domain_name" {
+  type = string
+}
+

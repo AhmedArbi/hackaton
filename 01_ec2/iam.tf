@@ -1,11 +1,11 @@
 resource "aws_iam_instance_profile" "this" {
-  name = "bastion-role"
+  name = "workshop-role"
   role = aws_iam_role.bastion_role.name
 }
 
 
-resource "aws_iam_role" "bastion_role" {
-  name = "bastion-role"
+resource "aws_iam_role" "workshop_role" {
+  name = "workshop-role"
 
   # Terraform's "jsonencode" function converts a
   # Terraform expression result to valid JSON syntax.
@@ -24,7 +24,7 @@ resource "aws_iam_role" "bastion_role" {
   })
 
   tags = {
-    name = "bastion-role"
+    name = "wokrshop-role"
   }
 }
 
@@ -64,28 +64,7 @@ resource "aws_iam_role_policy" "ecr" {
   })
 }
 
-resource "aws_iam_role_policy" "ec2_tags" {
-  name = "change-record_sets"
-  role = aws_iam_role.bastion_role.id
 
-  # Terraform's "jsonencode" function converts a
-  # Terraform expression result to valid JSON syntax.
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect   = "Allow"
-        Action   = "ec2:DescribeTags",
-        Resource = "*"
-      },
-      {
-        Effect   = "Allow",
-        Action   = "route53:ChangeResourceRecordSets",
-        Resource = "arn:aws:route53:::hostedzone/${data.terraform_remote_state.route53.outputs.hosted_zone_id}"
-      }
-    ]
-  })
-}
 
 resource "aws_iam_role_policy" "ssm" {
   name = "ssm-read-access"
@@ -108,22 +87,12 @@ resource "aws_iam_role_policy" "ssm" {
   })
 }
 
-resource "aws_iam_role_policy" "s3" {
-  name = "s3-read-access"
-  role = aws_iam_role.bastion_role.id
+resource "aws_iam_role_policy_attachment" "ecr_attach" {
+  role       = aws_iam_role.workshop_role.name
+  policy_arn = aws_iam_policy.ecr.arn
+}
 
-  # Terraform's "jsonencode" function converts a
-  # Terraform expression result to valid JSON syntax.
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = [
-          "s3:GetObject",
-        ]
-        Effect   = "Allow"
-        Resource = "*"
-      },
-    ]
-  })
+resource "aws_iam_role_policy_attachment" "ecr_attach" {
+  role       = aws_iam_role.workshop_role.name
+  policy_arn = aws_iam_policy.ssm.arn
 }
