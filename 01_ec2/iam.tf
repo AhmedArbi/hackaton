@@ -92,7 +92,7 @@ resource "aws_iam_role_policy_attachment" "ecr_attach" {
   policy_arn = aws_iam_policy.ecr.arn
 }
 
-resource "aws_iam_role_policy_attachment" "ecr_attach" {
+resource "aws_iam_role_policy_attachment" "ssm_attach" {
   role       = aws_iam_role.workshop_role.name
   policy_arn = aws_iam_policy.ssm.arn
 }
