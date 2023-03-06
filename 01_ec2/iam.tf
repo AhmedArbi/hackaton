@@ -31,7 +31,7 @@ resource "aws_iam_role" "workshop_role" {
 
 resource "aws_iam_role_policy" "ecr" {
   name = "ecr-authentification-access"
-  role = aws_iam_role.bastion_role.id
+  role = aws_iam_role.workshop_role.id
 
   # Terraform's "jsonencode" function converts a
   # Terraform expression result to valid JSON syntax.
@@ -68,7 +68,7 @@ resource "aws_iam_role_policy" "ecr" {
 
 resource "aws_iam_role_policy" "ssm" {
   name = "ssm-read-access"
-  role = aws_iam_role.bastion_role.id
+  role = aws_iam_role.workshop_role.id
 
   # Terraform's "jsonencode" function converts a
   # Terraform expression result to valid JSON syntax.
@@ -85,14 +85,4 @@ resource "aws_iam_role_policy" "ssm" {
       },
     ]
   })
-}
-
-resource "aws_iam_role_policy_attachment" "ecr_attach" {
-  role       = aws_iam_role.workshop_role.name
-  policy_arn = aws_iam_policy.ecr.arn
-}
-
-resource "aws_iam_role_policy_attachment" "ssm_attach" {
-  role       = aws_iam_role.workshop_role.name
-  policy_arn = aws_iam_policy.ssm.arn
 }
