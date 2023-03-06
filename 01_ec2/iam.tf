@@ -1,6 +1,6 @@
 resource "aws_iam_instance_profile" "this" {
   name = "workshop-role"
-  role = aws_iam_role.bastion_role.name
+  role = aws_iam_role.workshop_role.name
 }
 
 
