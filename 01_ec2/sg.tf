@@ -9,9 +9,9 @@ resource "aws_security_group" "workshop_sg" {
 
   ingress {
     description = "Allow SSH access on port 22 "
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
 

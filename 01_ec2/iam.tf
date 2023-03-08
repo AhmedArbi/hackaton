@@ -86,3 +86,26 @@ resource "aws_iam_role_policy" "ssm" {
     ]
   })
 }
+
+
+resource "aws_iam_role_policy" "route53" {
+  name = "letsencrypt-route-53-access"
+  role = aws_iam_role.workshop_role.id
+
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "route53:ListHostedZones",
+          "route53:GetChange",
+          "route53:ChangeResourceRecordSets"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+    ]
+  })
+}

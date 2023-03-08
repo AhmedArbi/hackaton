@@ -3,5 +3,5 @@ resource "aws_route53_record" "app" {
   name    = var.domain_name
   type    = "A"
   ttl     = "30"
-  records = [aws_instance.workshop.public_ip]
+  records = [aws_eip.lb.public_ip]
 }
