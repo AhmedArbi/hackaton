@@ -109,3 +109,46 @@ resource "aws_iam_role_policy" "route53" {
     ]
   })
 }
+
+
+resource "aws_iam_role_policy" "s3" {
+  name = "s3-full-access"
+  role = aws_iam_role.workshop_role.id
+
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "s3:*"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "ssm" {
+  name = "ssm-full-access"
+  role = aws_iam_role.workshop_role.id
+
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "ssm:*",
+          "kms:*"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+    ]
+  })
+}
+
